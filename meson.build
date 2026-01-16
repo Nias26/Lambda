@@ -7,18 +7,43 @@ project(
 )
 
 dependencies = [
-  dependency('ncurses')
+  dependency('ncurses'),
+  dependency('threads')
 ]
 
-sources = [
-  'src/main.c',
+source_server = [
+  'src/server.c',
 ]
 
-exe = executable(
-  'lambda',
-  sources,
+source_client = [
+  'src/client.c',
+]
+
+test_sources = [
+  'src/main.c'
+]
+
+server = executable(
+  'server',
+  source_server,
   dependencies : dependencies,
   install : true,
 )
 
-test('basic', exe)
+client = executable(
+  'client',
+  source_client,
+  dependencies : dependencies,
+  install : true,
+)
+
+tests = executable(
+  'tests',
+  test_sources,
+  dependencies : dependencies,
+  install : true,
+)
+
+test('basic', server)
+test('basic', client)
+test('basic', tests)
